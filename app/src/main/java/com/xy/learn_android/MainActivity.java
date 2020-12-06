@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.xy.learn_android.ui.listview.ListviewActivity;
+import com.xy.learn_android.ui.recyclerView.Rcr2Activity;
 import com.xy.learn_android.ui.recyclerView.RcrViewActivity;
 import com.xy.learn_android.ui.view_model.ViewModelActivity;
 import com.xy.learn_android.ui.databinding.bindDataActivity;
@@ -47,11 +48,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button btn3 = findViewById(R.id.bindingData2);
+        btn3.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, bindData2Activity.class);
+                startActivity(intent);
+            }
+        });
+
         Button btn1 = findViewById(R.id.recycle1);
         btn1.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, RcrViewActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button btn2 = findViewById(R.id.recycle2);
+        btn2.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Rcr2Activity.class);
                 startActivity(intent);
             }
         });

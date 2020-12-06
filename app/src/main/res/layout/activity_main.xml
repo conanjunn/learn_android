@@ -32,4 +32,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="recycle1" />
+
+    <Button
+        android:id="@+id/recycle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="recycle2" />
 </LinearLayout>
