@@ -9,6 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Learn_android">
+        <activity android:name=".ui.databinding.bindData2Activity"></activity>
+        <activity android:name=".ui.databinding.bindDataActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.databinding" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.listview.ListviewActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.listview" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.view_model.ViewModelActivity">
             <intent-filter>
                 <action android:name="android.intent.action.view_model" />

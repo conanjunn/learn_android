@@ -21,15 +21,12 @@ public class ViewModelActivity extends AppCompatActivity {
         TextView txt = findViewById(R.id.txt);
 
         model = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(ViewModelModel.class);
-
-        final Observer<String> nameObserver = new Observer<String>() {
+        model.getCurrentName().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable final String newName) {
                 txt.setText(newName);
             }
-        };
-
-        model.getCurrentName().observe(this, nameObserver);
+        });
 
         model.getCurrentName().setValue("abc");
     }
