@@ -27,4 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="dataBinding2" />
+    <Button
+        android:id="@+id/recycle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="recycle1" />
 </LinearLayout>
