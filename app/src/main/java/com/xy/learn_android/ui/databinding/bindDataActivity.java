@@ -15,6 +15,7 @@ public class bindDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bind_data);
 
+        // 注意这个ActivityBindDataBinding是由xml的文件名自动生成的
         ActivityBindDataBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_bind_data);
         User user = new User("Test", "User");
         binding.setUser(user);
