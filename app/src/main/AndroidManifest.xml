@@ -9,13 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Learn_android">
+        <activity android:name=".ui.recyclerView.ListAdapterActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.listAdapter" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.recyclerView.Rcr2Activity">
             <intent-filter>
                 <action android:name="android.intent.action.recycler2" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
         <activity android:name=".ui.recyclerView.RcrViewActivity">
             <intent-filter>
