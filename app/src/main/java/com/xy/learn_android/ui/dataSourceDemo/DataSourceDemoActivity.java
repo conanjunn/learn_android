@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.paging.DataSource;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PageKeyedDataSource;
@@ -41,7 +41,7 @@ public class DataSourceDemoActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         //getting our ItemViewModel
-        ItemViewModel itemViewModel = ViewModelProviders.of(this).get(ItemViewModel.class);
+        ItemViewModel itemViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(ItemViewModel.class);
 
         //creating the Adapter
         final ItemAdapter adapter = new ItemAdapter(this);
@@ -50,9 +50,6 @@ public class DataSourceDemoActivity extends AppCompatActivity {
         itemViewModel.itemPagedList.observe(this, new Observer<PagedList<Item>>() {
             @Override
             public void onChanged(@Nullable PagedList<Item> items) {
-
-                //in case of any changes
-                //submitting the items to adapter
                 adapter.submitList(items);
             }
         });
@@ -128,39 +125,39 @@ public class DataSourceDemoActivity extends AppCompatActivity {
     }
 
 
+    // Integer为要传给服务端的参数，Item为服务端返回的类型
     public static class ItemDataSource extends PageKeyedDataSource<Integer, Item> {
-
-        private final int key = 0;
 
         @Override
         public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull LoadInitialCallback<Integer, Item> callback) {
             ArrayList<Item> ret = new ArrayList<>();
             ret.add(new Item(1, "a"));
             ret.add(new Item(2, "b"));
-            callback.onResult(ret, null, key);
+            // key为null代表没有上一个或下一页了
+            callback.onResult(ret, 8, 10);
         }
 
         @Override
         public void loadBefore(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, Item> callback) {
             ArrayList<Item> ret = new ArrayList<>();
-            ret.add(new Item(0, "0"));
-            callback.onResult(ret, key - 1);
+            ret.add(new Item(0, String.valueOf(params.key - 1)));
+            callback.onResult(ret, params.key - 1);
         }
 
         @Override
         public void loadAfter(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, Item> callback) {
             ArrayList<Item> ret = new ArrayList<>();
-            ret.add(new Item(3, "c"));
-            callback.onResult(ret, key + 1);
+            ret.add(new Item(3, String.valueOf(params.key + 1)));
+            callback.onResult(ret, params.key + 1);
         }
     }
 
     public static class ItemDataSourceFactory extends DataSource.Factory<Integer, Item> {
-        public MutableLiveData<PageKeyedDataSource<Integer, Item>> getItemLiveDataSource() {
+        public MutableLiveData<ItemDataSource> getItemLiveDataSource() {
             return itemLiveDataSource;
         }
 
-        private final MutableLiveData<PageKeyedDataSource<Integer, Item>> itemLiveDataSource = new MutableLiveData<>();
+        private final MutableLiveData<ItemDataSource> itemLiveDataSource = new MutableLiveData<>();
 
         @NonNull
         @Override
@@ -173,15 +170,14 @@ public class DataSourceDemoActivity extends AppCompatActivity {
 
     public static class ItemViewModel extends ViewModel {
         LiveData<PagedList<Item>> itemPagedList;
-        LiveData<PageKeyedDataSource<Integer, Item>> liveDataSource;
+//        LiveData<ItemDataSource> liveDataSource;
 
-        //constructor
         public ItemViewModel() {
             //getting our data source factory
             ItemDataSourceFactory itemDataSourceFactory = new ItemDataSourceFactory();
 
             //getting the live data source from data source factory
-            liveDataSource = itemDataSourceFactory.getItemLiveDataSource();
+//            liveDataSource = itemDataSourceFactory.getItemLiveDataSource();
 
             //Getting PagedList config
             PagedList.Config pagedListConfig =
@@ -192,7 +188,6 @@ public class DataSourceDemoActivity extends AppCompatActivity {
             //Building the paged list
             itemPagedList = (new LivePagedListBuilder<>(itemDataSourceFactory, pagedListConfig))
                     .build();
-            
         }
     }
 }
