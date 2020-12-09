@@ -43,10 +43,7 @@ public class ListAdapterActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<User> list2 = new ArrayList<>();
-                for (int i = 0; i < list.size(); i++) {
-                    list2.add(list.get(i));
-                }
+                ArrayList<User> list2 = new ArrayList<>(list);
                 list2.add(new User("ccc"));
                 list2.add(new User("ddd"));
                 adapter.submitList(list2);

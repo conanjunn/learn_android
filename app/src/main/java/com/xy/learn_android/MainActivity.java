@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.xy.learn_android.ui.dataSourceDemo.DataSourceDemoActivity;
 import com.xy.learn_android.ui.listview.ListviewActivity;
 import com.xy.learn_android.ui.recyclerView.ListAdapterActivity;
 import com.xy.learn_android.ui.recyclerView.Rcr2Activity;
@@ -81,6 +82,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ListAdapterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button btn5 = findViewById(R.id.dataSource);
+        btn5.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DataSourceDemoActivity.class);
                 startActivity(intent);
             }
         });
