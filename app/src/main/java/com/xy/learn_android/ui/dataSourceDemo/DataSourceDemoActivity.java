@@ -192,6 +192,7 @@ public class DataSourceDemoActivity extends AppCompatActivity {
             //Building the paged list
             itemPagedList = (new LivePagedListBuilder<>(itemDataSourceFactory, pagedListConfig))
                     .build();
+            
         }
     }
 }
