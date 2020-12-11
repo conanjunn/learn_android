@@ -27,6 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="dataBinding2" />
+
     <Button
         android:id="@+id/recycle1"
         android:layout_width="wrap_content"
@@ -38,6 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="recycle2" />
+
     <Button
         android:id="@+id/recycle3"
         android:layout_width="wrap_content"
@@ -49,4 +51,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="dataSource" />
+
+    <Button
+        android:id="@+id/bili"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="bili" />
 </LinearLayout>

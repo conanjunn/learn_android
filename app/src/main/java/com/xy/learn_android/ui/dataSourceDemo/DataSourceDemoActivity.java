@@ -163,7 +163,7 @@ public class DataSourceDemoActivity extends AppCompatActivity {
         @Override
         public DataSource<Integer, Item> create() {
             ItemDataSource itemDataSource = new ItemDataSource();
-            itemLiveDataSource.postValue(itemDataSource);
+//            itemLiveDataSource.postValue(itemDataSource);
             return itemDataSource;
         }
     }
