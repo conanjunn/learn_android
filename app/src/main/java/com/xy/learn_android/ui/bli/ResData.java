@@ -32,6 +32,16 @@ public class ResData {
         }
 
         private ArrayList<ResItem> cards;
+
+        public Long getNext_offset() {
+            return next_offset;
+        }
+
+        public void setNext_offset(Long next_offset) {
+            this.next_offset = next_offset;
+        }
+
+        private Long next_offset;
     }
 
     public static class ResItem {
