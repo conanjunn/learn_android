@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -36,15 +37,23 @@ public class BliDataSource {
 
             ArrayList<String> list = new ArrayList<>();
             ArrayList<ResData.ResItem> a = grade.getData().getCards();
-            for (int i = 0; i < a.size(); i++) {
-                ResData.Card crd = gson.fromJson(a.get(i).getCard(), ResData.Card.class);
-                ArrayList<ResData.Card.Img> b = crd.getItem().getPictures();
-                if (b != null) {
-                    for (int j = 0; j < b.size(); j++) {
-                        list.add(b.get(j).getImg_src());
+            a.forEach(new Consumer<ResData.ResItem>() {
+                @Override
+                public void accept(ResData.ResItem resItem) {
+                    ResData.Card crd = gson.fromJson(resItem.getCard(), ResData.Card.class);
+                    ArrayList<ResData.Card.Img> b = crd.getItem().getPictures();
+                    if (b != null) {
+                        b.forEach(new Consumer<ResData.Card.Img>() {
+                            @Override
+                            public void accept(ResData.Card.Img img) {
+                                list.add(img.getImg_src());
+                            }
+                        });
                     }
                 }
-            }
+            });
+
+
             callback.onResult(list, null, null);
 
         }
@@ -80,7 +89,6 @@ public class BliDataSource {
 
     public static class ItemViewModel extends ViewModel {
         LiveData<PagedList<String>> itemPagedList;
-
 
         public ItemViewModel() {
             ItemDataFactory itemDataSourceFactory = new ItemDataFactory();
