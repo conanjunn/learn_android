@@ -27,54 +27,31 @@ public class BliDataSource {
 
         @Override
         public void loadInitial(@NonNull LoadInitialParams<String> params, @NonNull LoadInitialCallback<String, String> callback) {
-            String response = null;
-            try {
-                response = run(String.format(url, "0"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Gson gson = new Gson();
-            ResData grade = gson.fromJson(response, ResData.class);
-
-            ArrayList<String> list = new ArrayList<>();
-            ArrayList<ResData.ResItem> a = grade.getData().getCards();
-
-            Long nextId = grade.getData().getNext_offset();
-            String nextOffset = String.valueOf(nextId);
-
-            a.forEach(new Consumer<ResData.ResItem>() {
-                @Override
-                public void accept(ResData.ResItem resItem) {
-                    ResData.Card crd = gson.fromJson(resItem.getCard(), ResData.Card.class);
-                    ResData.Card.Pic c = crd.getItem();
-                    if (c != null) {
-                        ArrayList<ResData.Card.Img> b = c.getPictures();
-                        if (b != null) {
-                            b.forEach(new Consumer<ResData.Card.Img>() {
-                                @Override
-                                public void accept(ResData.Card.Img img) {
-                                    list.add(img.getImg_src());
-                                }
-                            });
-                        }
-                    }
-                }
-            });
-            callback.onResult(list, null, nextOffset);
+            RunRet ret = run("0");
+            callback.onResult(ret.list, null, ret.next);
         }
 
         @Override
         public void loadBefore(@NonNull LoadParams<String> params, @NonNull LoadCallback<String, String> callback) {
-
         }
 
         @Override
         public void loadAfter(@NonNull LoadParams<String> params, @NonNull LoadCallback<String, String> callback) {
-            String response = null;
-            try {
-                response = run(String.format(url, params));
+            RunRet ret = run(params.key);
+            callback.onResult(ret.list, ret.next);
+        }
+
+        private RunRet run(String param) {
+            String response;
+            Request request = new Request.Builder()
+                    .url(String.format(url, param))
+                    .build();
+
+            try (Response resp = client.newCall(request).execute()) {
+                response = resp.body().string();
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
             Gson gson = new Gson();
             ResData grade = gson.fromJson(response, ResData.class);
@@ -103,18 +80,18 @@ public class BliDataSource {
                     }
                 }
             });
-            callback.onResult(list, null);
+            return new RunRet(list, nextOffset);
+        }
+    }
+
+    public static class RunRet {
+        public RunRet(ArrayList<String> list, String next) {
+            this.list = list;
+            this.next = next;
         }
 
-        private String run(String url) throws IOException {
-            Request request = new Request.Builder()
-                    .url(url)
-                    .build();
-
-            try (Response response = client.newCall(request).execute()) {
-                return response.body().string();
-            }
-        }
+        public ArrayList<String> list;
+        public String next;
     }
 
     public static class ItemDataFactory extends DataSource.Factory<String, String> {
@@ -134,7 +111,7 @@ public class BliDataSource {
             PagedList.Config pagedListConfig =
                     (new PagedList.Config.Builder())
                             .setEnablePlaceholders(false)
-                            .setPageSize(20).build();
+                            .setPageSize(5).build();
 
             itemPagedList = (new LivePagedListBuilder<>(itemDataSourceFactory, pagedListConfig))
                     .build();

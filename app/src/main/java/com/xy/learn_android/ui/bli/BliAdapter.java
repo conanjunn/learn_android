@@ -1,6 +1,8 @@
 package com.xy.learn_android.ui.bli;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +15,13 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.xy.learn_android.R;
 
 public class BliAdapter extends PagedListAdapter<String, BliAdapter.VH> {
     private final Context mCtx;
+    private final  RequestManager glideManager;
+
     public BliAdapter(Context mCtx) {
         super(new DiffUtil.ItemCallback<String>() {
             @Override
@@ -30,6 +35,7 @@ public class BliAdapter extends PagedListAdapter<String, BliAdapter.VH> {
             }
         });
         this.mCtx = mCtx;
+        glideManager = Glide.with(this.mCtx);
     }
 
     @NonNull
@@ -42,7 +48,7 @@ public class BliAdapter extends PagedListAdapter<String, BliAdapter.VH> {
     @Override
     public void onBindViewHolder(@NonNull VH holder, int position) {
         String img = getItem(position);
-        Glide.with(this.mCtx).load(img).into(holder.getImg());
+        glideManager.load(img).placeholder(new ColorDrawable(Color.GRAY)).into(holder.getImg());
     }
 
     public static class VH extends RecyclerView.ViewHolder {
